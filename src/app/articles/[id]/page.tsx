@@ -35,7 +35,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       <h1>{article.title}</h1>
       
       <section className="article-content-section">
-        <h2>泰語原文</h2>
+        <h2>泰語原文 Thai</h2>
         <div className="thai-content">
           {article.content.split('\n').map((paragraph, index) => (
             <p key={index}>{paragraph}</p>

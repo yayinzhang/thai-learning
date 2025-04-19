@@ -61,7 +61,7 @@ export default function AdminPage() {
   return (
     <div className="admin-container">
       <div className="admin-header">
-        <h1>文章管理</h1>
+        <h1>文章管理 test</h1>
         <button className="admin-button" onClick={handleCreateNew}>
           新增文章
         </button>
