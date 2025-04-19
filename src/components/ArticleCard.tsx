@@ -19,7 +19,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
         {article.content.length > 150 && '...'}
       </p>
       <div className="mt-4 text-sm text-gray-500">
-        發布於：{article.createdAt.toLocaleDateString()}
+        發布於：{new Date(article.createdAt).toLocaleDateString()}
       </div>
     </Link>
   );
