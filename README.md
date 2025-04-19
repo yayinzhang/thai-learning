@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Thai Learning Website (泰語學習網站)
 
-## Getting Started
+這是一個透過 AI 協助開發的泰語學習網站，提供以下功能：
 
-First, run the development server:
+- 📰 **泰文新聞閱讀與翻譯**：自動將泰文文章翻譯為繁體中文
+- 🧠 **單字表整理**：每篇文章自動擷取泰文單字＋詞性＋中文意思
+- ✏️ **句型與文法解析**：針對泰文語法自動產出教學說明與例句
+- 💬 **中泰對照頁面**：閱讀泰文時可以同步參考中文翻譯與教學內容
+- 🔐 **後台管理**：由管理者貼上新聞連結，自動生成教學內容並上架
+- ☁️ **Git 自動備份與推送系統**：使用 `thai-save` 指令一鍵 commit + push
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 使用技術
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Next.js + Tailwind CSS
+- TypeScript 型別管理
+- LocalStorage（準備串 Supabase）
+- OpenAI GPT-4 API（AI 分析教學內容）
+- Git + GitHub 自動化備份流程
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📌 目前進度
 
-To learn more about Next.js, take a look at the following resources:
+- [x] 建立網站框架
+- [x] 完成 AI 教學內容生成流程
+- [x] 設定 Git 自動化指令 `git-backup-and-push`
+- [x] 上傳 GitHub 並加上 README
+- [ ] 串接 Supabase 做資料庫儲存
+- [ ] 設計會員系統與學習紀錄
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧑‍💻 製作人員
 
-## Deploy on Vercel
+- 張雅茵（Yayin Zhang）— 開發者 & 產品設計
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
