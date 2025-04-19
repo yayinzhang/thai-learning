@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Article } from '@/types/models';
-import { getArticleById } from '@/services/articleService';
 import { notFound } from 'next/navigation';
 
 export default function ArticlePage({ params }: { params: { id: string } }) {
@@ -10,13 +9,25 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadArticle = () => {
-      const foundArticle = getArticleById(params.id);
-      if (!foundArticle || foundArticle.status !== 'published') {
-        notFound();
+    const loadArticle = async () => {
+      try {
+        const res = await fetch(`/api/articles/${params.id}`);
+        if (!res.ok) {
+          console.error('Fetch failed with status:', res.status);
+          return notFound();
+        }
+        const data = await res.json();
+        if (data.status !== 'published') {
+          console.warn('Article status not published:', data.status);
+          return notFound();
+        }
+        setArticle(data);
+      } catch (error) {
+        console.error('Error fetching article:', error);
+        return notFound();
+      } finally {
+        setIsLoading(false);
       }
-      setArticle(foundArticle);
-      setIsLoading(false);
     };
 
     loadArticle();
@@ -33,7 +44,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
   return (
     <div className="article-page">
       <h1>{article.title}</h1>
-      
+
       <section className="article-content-section">
         <h2>泰語原文 Thai</h2>
         <div className="thai-content">
@@ -55,7 +66,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       <section className="vocabulary-section">
         <h2>單字列表</h2>
         <div className="word-list">
-          {article.words.map((word, index) => (
+          {article.words?.map((word, index) => (
             <div key={index} className="word-item">
               <span className="thai-word">{word.thai}</span>
               <span className="word-type">{word.type}</span>
@@ -68,7 +79,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       <section className="grammar-section">
         <h2>文法重點</h2>
         <div className="grammar-list">
-          {article.grammarPoints.map((point, index) => (
+          {article.grammarPoints?.map((point, index) => (
             <div key={index} className="grammar-item">
               <h3>{point.title}</h3>
               <p className="explanation">{point.explanation}</p>
@@ -86,4 +97,4 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
       </section>
     </div>
   );
-} 
+}

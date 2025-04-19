@@ -1,12 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { getPublishedArticles } from '@/services/articleService';
+import { useState, useEffect } from 'react';
+import type { Article } from '@/types/models';
 import Link from 'next/link';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
-  const articles = getPublishedArticles();
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch('/api/articles');
+        const fetchedArticles: Article[] = await response.json();
+        setArticles(fetchedArticles);
+      } catch (error) {
+        console.error('Failed to fetch articles:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
   
   const filteredArticles = searchTerm
     ? articles.filter(article =>
@@ -14,6 +31,10 @@ export default function Home() {
         article.chineseContent.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : articles;
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="home-page">
@@ -39,8 +60,8 @@ export default function Home() {
               <div className="article-meta">
                 <span className="article-type">會話</span>
                 <div className="article-stats">
-                  <span className="word-count">{article.words.length} 個單字</span>
-                  <span className="grammar-count">{article.grammarPoints.length} 個文法</span>
+                  <span className="word-count">{article.words?.length ?? 0} 個單字</span>
+                  <span className="grammar-count">{article.grammarPoints?.length ?? 0} 個文法</span>
                 </div>
               </div>
             </div>

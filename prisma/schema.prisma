@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArticleStatus {
+  draft
+  published
+}
+
+enum Role {
+  admin
+  user
+}
+
+model Article {
+  id             String        @id @default(uuid())
+  title          String
+  chineseTitle   String
+  content        String
+  chineseContent String
+  type           String
+  url            String
+  status         ArticleStatus @default(draft)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  authorId String
+  author   User   @relation("UserArticles", fields: [authorId], references: [id])
+
+  words         Word[]
+  grammarPoints GrammarPoint[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  username  String   @unique
+  role      Role     @default(user)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  articles Article[] @relation("UserArticles")
+}
+
+model Word {
+  id            Int      @id @default(autoincrement())
+  thai          String
+  chinese       String
+  type          String
+  pronunciation String
+  articleId     String
+  article       Article  @relation(fields: [articleId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model GrammarPoint {
+  id          Int               @id @default(autoincrement())
+  title       String
+  explanation String
+  articleId   String
+  article     Article           @relation(fields: [articleId], references: [id])
+  examples    GrammarExample[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model GrammarExample {
+  id             Int            @id @default(autoincrement())
+  thai           String
+  chinese        String
+  grammarPointId Int
+  grammarPoint   GrammarPoint   @relation(fields: [grammarPointId], references: [id])
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
